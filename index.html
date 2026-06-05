@@ -200,7 +200,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(248,247,244,.9);backdrop-f
 .wc:hover{background:var(--white);}
 .wc.wide{grid-column:span 2;}
 .wthumb{aspect-ratio:16/9;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
-.wc.wide .wthumb{aspect-ratio:21/9;}
+
 .wti{display:flex;flex-direction:column;align-items:center;gap:11px;}
 .pbtn{width:50px;height:50px;border-radius:50%;background:var(--white);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 16px rgba(180,40,100,.07);transition:all .2s;}
 .wc:hover .pbtn{background:var(--acc);border-color:var(--acc);box-shadow:0 4px 22px rgba(212,67,124,.3);transform:scale(1.08);}
@@ -213,6 +213,26 @@ nav{position:sticky;top:0;z-index:100;background:rgba(248,247,244,.9);backdrop-f
 .wdesc{font-size:.95rem;color:var(--mid);font-weight:300;line-height:1.6;margin-bottom:9px;}
 .wtags{display:flex;flex-wrap:wrap;gap:4px;}
 .wtag{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--faint);}
+
+/* Thumbnail support */
+.wthumb{position:relative;overflow:hidden;}
+.wthumb img.thumb-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.wthumb .wti{position:relative;z-index:2;}
+.wthumb.has-thumb .wti{
+  background:rgba(0,0,0,0.28);
+  width:100%;height:100%;
+  position:absolute;inset:0;
+  opacity:0;transition:opacity .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.wc:hover .wthumb.has-thumb .wti{opacity:1;}
+/* Portrait/short card */
+.wc.portrait-card{grid-column:span 1;}
+.wc.portrait-card .wthumb{aspect-ratio:9/16;max-width:240px;margin:0 auto;}
 
 .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
 .ic{background:var(--bg);padding:1.85rem;transition:background .2s;}
@@ -387,7 +407,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:2.25rem 2.5rem;
     <div>
       <div class="eyebrow">AI Creative Producer &nbsp;·&nbsp; <span class="acc">Kazakistan</span></div>
       <div class="hh">
-        <h1>Merhaba, Ben<br><span class="row2 underline-acc">Zhuldyz. </span><span class="row3">AI Creative Producer</span></h1>
+        <h1>Merhaba, Ben<br><span class="row2 underline-acc">Zhuldyz. </span><span class="row3">(Yıldız) AI Creative Producer</span></h1>
         <p class="hsub">Senaryo yazımından ses tasarımına, görsel üretimden final kurguya — AI araçlarıyla tam pipeline. Teknik altyapı ve yaratıcı bakış açısı bir arada.</p>
       </div>
     </div>
@@ -483,17 +503,16 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:2.25rem 2.5rem;
   <div class="sh-r">08 proje</div>
 </div>
 <div class="wgrid">
-  <div class="wc wide" onclick="openModal('v1')">
-    <div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div>
-    <div class="wmeta"><p class="wcat">Eğitim · Tarihi</p><p class="wtit">Kazak Hanlığı'nın Kuruluşu (1465)</p><p class="wdesc">Senaryo → storyboard → AI video → seslendirme → müzik → final kurgu.</p><div class="wtags"><span class="wtag">Seedance</span><span class="wtag">ElevenLabs</span><span class="wtag">Suno</span><span class="wtag">Nano Banana</span></div></div>
+  <div class="wc" id="card-v1" onclick="openModal('v1')">
+    <div class="wthumb" id="thumb-v1"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div>
+    <div class="wmeta"><p class="wcat">Eğitim · Tarihi</p><p class="wtit">Kazak Hanlığı'nın Kuruluşu (1465)</p><p class="wdesc">Senaryo → storyboard → AI video → seslendirme → müzik → final kurgu.</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">ElevenLabs</span><span class="wtag">Suno</span><span class="wtag">Firefly</span></div></div>
   </div>
-  <div class="wc" onclick="openModal('v2')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Marka</p><p class="wtit">Proje 2 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">ChatGPT</span></div></div></div>
-  <div class="wc" onclick="openModal('v3')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Sinematik</p><p class="wtit">Proje 3 Başlığı</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">Nano Banana</span></div></div></div>
-  <div class="wc" onclick="openModal('v4')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Kültürel</p><p class="wtit">Proje 4 Başlığı</p><div class="wtags"><span class="wtag">Firefly</span><span class="wtag">ElevenLabs</span></div></div></div>
-  <div class="wc" onclick="openModal('v5')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Reklam</p><p class="wtit">Proje 5 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">Suno</span></div></div></div>
-  <div class="wc" onclick="openModal('v6')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Eğitim</p><p class="wtit">Proje 6 Başlığı</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">ChatGPT</span></div></div></div>
-  <div class="wc" onclick="openModal('v7')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Atmosferik</p><p class="wtit">Proje 7 Başlığı</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">ElevenLabs</span></div></div></div>
-  <div class="wc" onclick="openModal('v8')"><div class="wthumb"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Konsept</p><p class="wtit">Proje 8 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">Firefly</span></div></div></div>
+  <div class="wc" id="card-v2" onclick="openModal('v2')"><div class="wthumb" id="thumb-v2"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Marka</p><p class="wtit">Proje 2 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">ChatGPT</span></div></div></div>
+  <div class="wc" id="card-v3" onclick="openModal('v3')"><div class="wthumb" id="thumb-v3"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Sinematik</p><p class="wtit">Proje 3 Başlığı</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">Nano Banana</span></div></div></div>
+  <div class="wc" id="card-v5" onclick="openModal('v5')"><div class="wthumb" id="thumb-v5"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Reklam</p><p class="wtit">Proje 5 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">Suno</span></div></div></div>
+  <div class="wc" id="card-v6" onclick="openModal('v6')"><div class="wthumb" id="thumb-v6"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Eğitim</p><p class="wtit">Proje 6 Başlığı</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">ChatGPT</span></div></div></div>
+  <div class="wc" id="card-v7" onclick="openModal('v7')"><div class="wthumb" id="thumb-v7"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Atmosferik</p><p class="wtit">Proje 7 Başlığı</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">ElevenLabs</span></div></div></div>
+  <div class="wc" id="card-v8" onclick="openModal('v8')"><div class="wthumb" id="thumb-v8"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div><span class="tlbl">Video Ekle</span></div></div><div class="wmeta"><p class="wcat">Konsept</p><p class="wtit">Proje 8 Başlığı</p><div class="wtags"><span class="wtag">Runway</span><span class="wtag">Firefly</span></div></div></div>
 </div>
 
 <div class="sh" id="interactive">
@@ -501,10 +520,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:2.25rem 2.5rem;
   <div class="sh-r">03 uygulama</div>
 </div>
 <div class="igrid">
-  <div class="ic" style="padding:0;overflow:hidden;">
+<div class="ic" style="padding:0;overflow:hidden;">
   <div style="
     height:160px;
-    background:url('bta.jpg') center/cover no-repeat;
+    background:url('bta.png') center/cover no-repeat;
     position:relative;
   ">
     <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;">
@@ -516,8 +535,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:2.25rem 2.5rem;
     <p class="idesc">Geleneksel Kazak sofra adabını öğreten interaktif ders — hotspot keşif, bilgi kartları ve quiz.</p>
     <a href="bata.html" target="_blank" class="ilink">Görüntüle →</a>
   </div>
-</div>
-  <div class="ic"><div class="iico">🎯</div><p class="itit">İnteraktif Uygulama 2</p><p class="idesc">Açıklama ekle — ne yaptığını ve hangi araçları kullandığını kısaca anlat.</p><a href="#" class="ilink">Görüntüle →</a></div>
+</div>  <div class="ic"><div class="iico">🎯</div><p class="itit">İnteraktif Uygulama 2</p><p class="idesc">Açıklama ekle — ne yaptığını ve hangi araçları kullandığını kısaca anlat.</p><a href="#" class="ilink">Görüntüle →</a></div>
   <div class="ic"><div class="iico">✨</div><p class="itit">İnteraktif Uygulama 3</p><p class="idesc">Açıklama ekle — ne yaptığını ve hangi araçları kullandığını kısaca anlat.</p><a href="#" class="ilink">Görüntüle →</a></div>
 </div>
 
@@ -709,14 +727,36 @@ window.addEventListener('resize', initBubbles);
 
 // ── VIDEO MODAL ───────────────────────────────────────────────
 const vd={
-  v1:{url:'https://www.youtube.com/watch?v=UWSpnGRUEDg',title:"Kazak Hanlığı'nın Kuruluşu (1465)",desc:'Nano Banana + Seedance + ElevenLabs + Suno.'},
-  v2:{url:'https://youtube.com/shorts/PpgPvYjFYr0?feature=share',title:'Proje 2',desc:'Açıklama ekle.'},
-  v3:{url:'',title:'Proje 3',desc:'Açıklama ekle.'},
-  v5:{url:'',title:'Proje 5',desc:'Açıklama ekle.'},
-  v6:{url:'',title:'Proje 6',desc:'Açıklama ekle.'},
-  v7:{url:'',title:'Proje 7',desc:'Açıklama ekle.'},
-  v8:{url:'',title:'Proje 8',desc:'Açıklama ekle.'},
+  v1:{url:'https://www.youtube.com/watch?v=UWSpnGRUEDg',title:"Kazak Hanlığı'nın Kuruluşu (1465)",desc:'Nano Banana + Seedance + ElevenLabs + Suno.',type:'landscape'},
+  v2:{url:'https://youtube.com/shorts/PpgPvYjFYr0?feature=share',title:'Proje 2',desc:'Açıklama ekle.',type:'portrait'},
+  v3:{url:'https://www.youtube.com/watch?v=fsvyhNvTLfE',title:'Proje 3',desc:'Açıklama ekle.',type:'landscape'},
+  v5:{url:'https://www.youtube.com/shorts/keL9WrlB4ks',title:'Proje 5',desc:'Açıklama ekle.',type:'portrait'},
+  v6:{url:'https://www.youtube.com/watch?v=iP251Joke3k',title:'Proje 6',desc:'Açıklama ekle.',type:'landscape'},
+  v7:{url:'https://youtube.com/shorts/XkG2BCrMV_g?feature=share',title:'Proje 7',desc:'Açıklama ekle.',type:'portrait'},
+  v8:{url:'https://www.youtube.com/watch?v=logE2O8niSo',title:'Proje 8',desc:'Açıklama ekle.',type:'landscape'},
 };
+
+// Auto-load thumbnails + adjust portrait cards
+Object.entries(vd).forEach(([id, v]) => {
+  const yt = ytId(v.url);
+  const thumbEl = document.getElementById('thumb-' + id);
+  const cardEl  = document.getElementById('card-' + id);
+  if (!thumbEl) return;
+  if (v.type === 'portrait' && cardEl) {
+    cardEl.classList.remove('wide');
+    cardEl.classList.add('portrait-card');
+    thumbEl.style.aspectRatio = '9/16';
+    thumbEl.style.maxWidth = '220px';
+    thumbEl.style.margin = '0 auto';
+  }
+  if (!yt) return;
+  const img = document.createElement('img');
+  img.className = 'thumb-img';
+  img.src = 'https://img.youtube.com/vi/' + yt + '/maxresdefault.jpg';
+  img.onerror = () => { img.src = 'https://img.youtube.com/vi/' + yt + '/hqdefault.jpg'; };
+  thumbEl.prepend(img);
+  thumbEl.classList.add('has-thumb');
+});
 function ytId(u){const m=(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?\/]+)/);return m?m[1]:null;}
 function openModal(id){
   const v=vd[id];
