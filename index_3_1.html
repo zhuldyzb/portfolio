@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Creative Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#F8F7F4;--bg2:#F0EFE9;--bg3:#E8E6DE;--white:#FEFEFE;
+  --acc:#D4437C;--acc-l:#E8609A;--acc-bg:#FDF0F5;--acc-xl:#F7CCE0;
+  --ink:#111118;--ink2:#2A2A35;--mid:#64647A;--faint:#9898AA;
+  --line:#E0DFD8;--line2:#CECDC4;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;}
+
+.ticker{background:var(--ink);overflow:hidden;height:42px;display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 40s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{display:inline-flex;align-items:center;padding:0 2rem;font-family:'Space Mono',monospace;font-size:.82rem;letter-spacing:.06em;color:rgba(255,255,255,.45);}
+.ticker-item .dot{color:var(--acc-l);margin:0 .6rem;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(248,247,244,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;}
+.nl{font-family:'Space Mono',monospace;font-size:.8rem;font-weight:500;letter-spacing:.04em;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.ndot{width:9px;height:9px;background:var(--acc-l);border-radius:50%;animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.6);}}
+.nc{display:flex;gap:2rem;position:absolute;left:50%;transform:translateX(-50%);}
+.nc a{font-size:1rem;color:var(--mid);text-decoration:none;font-weight:500;padding:4px 0;border-bottom:1.5px solid transparent;transition:color .2s,border-color .2s;}
+.nc a:hover{color:var(--acc);border-bottom-color:var(--acc);}
+.nbadge{background:var(--acc-bg);border:1px solid var(--acc-xl);color:var(--acc);font-size:.85rem;font-family:'Space Mono',monospace;padding:7px 16px;border-radius:100px;display:flex;align-items:center;gap:6px;font-weight:500;}
+.nbadge::before{content:'';width:5px;height:5px;background:var(--acc-l);border-radius:50%;animation:pulse 2.5s ease-in-out infinite;}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 92px);border-bottom:1px solid var(--line);}
+.hl{padding:4rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line);}
+.eyebrow{font-family:'Space Mono',monospace;font-size:.92rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:2rem;display:flex;align-items:center;gap:8px;}
+.eyebrow .acc{color:var(--acc);font-weight:500;}
+.hh{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.hh h1{font-size:clamp(3.5rem,6.5vw,7rem);font-weight:700;line-height:.93;letter-spacing:-.03em;color:var(--ink);font-family:'Space Grotesk',sans-serif;}
+.hh h1 .row2{color:var(--ink);}
+.hh h1 .underline-acc{
+  position:relative;
+  display:inline-block;
+  color:var(--ink);
+}
+.hh h1 .underline-acc::after{
+  content:'';
+  position:absolute;
+  left:0;bottom:-10px;
+  width:100%;height:6px;
+  background:var(--acc);
+  border-radius:3px;
+}
+.hh h1 .row3{color:var(--mid);font-weight:400;font-style:normal;font-size:.28em;letter-spacing:.08em;display:block;margin-top:.9em;font-family:'Space Mono',monospace;text-transform:uppercase;}
+.hsub{font-size:1.05rem;color:var(--mid);font-weight:300;line-height:1.8;max-width:440px;margin-top:1.75rem;}
+.hbot{display:flex;align-items:center;gap:1.25rem;padding-top:2.5rem;border-top:1px solid var(--line);flex-wrap:wrap;}
+.btn-p{background:var(--acc);color:#fff;padding:14px 30px;border-radius:100px;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:7px;}
+.btn-p:hover{background:var(--ink);transform:translateY(-1px);}
+.btn-s{color:var(--mid);font-size:1rem;font-weight:500;text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:2px;transition:color .2s,border-color .2s;}
+.btn-s:hover{color:var(--acc);border-color:var(--acc);}
+
+/* HERO RIGHT */
+.hr{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
+.ppwrap{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+
+/* Profile photo placeholder */
+.pp{
+  width:320px;height:320px;border-radius:50%;
+  object-fit:cover;object-position:center 12%;
+  border:4px solid var(--white);
+  box-shadow:0 8px 50px rgba(180,40,100,.18);
+  position:relative;z-index:5;
+  flex-shrink:0;
+  background-color:var(--bg3); /* Fallback bg if image fails to load */
+}
+
+/* Orbiting rings */
+.orbit-ring-gray-2{
+  position:absolute;
+  width:520px;height:520px;
+  border-radius:50%;
+  border:1px dashed var(--line);
+  pointer-events:none;
+  animation:rspin 45s linear infinite reverse;
+  z-index:1;
+}
+.orbit-ring-gray-1{
+  position:absolute;
+  width:440px;height:440px;
+  border-radius:50%;
+  border:1px dashed var(--line2);
+  pointer-events:none;
+  animation:rspin 35s linear infinite;
+  z-index:2;
+}
+.orbit-ring-outer{
+  position:absolute;
+  width:360px;height:360px;
+  border-radius:50%;
+  border:1.5px dashed var(--acc-xl);
+  pointer-events:none;
+  animation:rspin 22s linear infinite;
+  z-index:3;
+}
+.orbit-ring-inner{
+  position:absolute;
+  width:290px;height:290px;
+  border-radius:50%;
+  border:1.5px solid var(--acc);
+  opacity:0.35;
+  pointer-events:none;
+  animation:rspin 14s linear infinite reverse;
+  z-index:3;
+}
+.orbit-ring-dot-wrapper{
+  position:absolute;
+  width:360px;height:360px;
+  border-radius:50%;
+  pointer-events:none;
+  animation:rspin 22s linear infinite;
+  z-index:4;
+}
+.pink-dot{
+  position:absolute;
+  width:14px;height:14px;
+  background:var(--acc);
+  border:2.5px solid var(--white);
+  border-radius:50%;
+  top:50%;right:-7px;
+  transform:translateY(-50%);
+}
+@keyframes rspin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+.icon-bubble{
+  position:absolute;
+  top:0; left:0;
+  width:70px;height:70px;
+  border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  gap:2px;
+  cursor:default;
+  z-index:10;
+  transition:box-shadow .2s;
+  will-change:transform;
+  overflow:hidden;
+  transform-origin:center center;
+}
+.icon-bubble img{
+  width:68px;height:68x;
+  object-fit:contain;
+  border-radius:0;
+}
+.icon-bubble:hover{
+  box-shadow:0 8px 28px rgba(212,67,124,.25);
+}
+.icon-bubble .ico-lbl{
+  font-size:.42rem;
+  font-family:'Space Mono',monospace;
+  color:var(--faint);
+  white-space:nowrap;
+  letter-spacing:.03em;
+  margin-top:1px;
+}
+
+.ptag{
+  position:absolute;bottom:1.25rem;right:1.5rem;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:12px;padding:8px 12px;font-size:.68rem;
+  line-height:1.45;box-shadow:0 2px 16px rgba(180,40,100,.07);z-index:20;
+}
+.ptag strong{display:block;font-weight:600;font-size:1rem;color:var(--ink);}
+.ptag span{color:var(--faint);font-family:'Space Mono',monospace;font-size:.78rem;}
+
+.tshelf{padding:1.25rem 2rem;border-top:1px solid var(--line);background:var(--bg3);}
+.tslbl{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
+.tschips{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-size:.85rem;color:var(--ink2);font-weight:500;transition:all .15s;cursor:pointer;}
+.chip:hover{background:var(--acc-bg);border-color:var(--acc-xl);color:var(--acc);}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);}
+.sbox{padding:2rem 3rem;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;}
+.sbox:last-child{border-right:none;}
+.sn{font-size:3.2rem;font-weight:700;letter-spacing:-.04em;font-family:'Space Grotesk',sans-serif;line-height:1;color:var(--ink);}
+.sn.a{color:var(--acc);}
+.sl{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;}
+
+.sh{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid var(--line);}
+.sh-l{display:flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);}
+.sh-pill{background:var(--acc-bg);border:1px solid var(--acc-xl);color:var(--acc);padding:2px 9px;border-radius:100px;font-size:.6rem;}
+.sh-r{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--line2);}
+
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+.wc{background:var(--bg);cursor:pointer;transition:background .2s;}
+.wc:hover{background:var(--white);}
+.wc.wide{grid-column:span 2;}
+.wthumb{aspect-ratio:16/9;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
+
+.wti{display:flex;flex-direction:column;align-items:center;gap:11px;}
+.pbtn{width:50px;height:50px;border-radius:50%;background:var(--white);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 16px rgba(180,40,100,.07);transition:all .2s;}
+.wc:hover .pbtn{background:var(--acc);border-color:var(--acc);box-shadow:0 4px 22px rgba(212,67,124,.3);transform:scale(1.08);}
+.pbtn svg{width:15px;height:15px;fill:var(--faint);margin-left:2px;transition:fill .2s;}
+.wc:hover .pbtn svg{fill:#fff;}
+.tlbl{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+.wmeta{padding:1.1rem 1.4rem;border-top:1px solid var(--line);}
+.wcat{font-family:'Space Mono',monospace;font-size:.88rem;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.wtit{font-size:1.25rem;font-weight:700;letter-spacing:-.01em;font-family:'Space Grotesk',sans-serif;color:var(--ink);margin-bottom:5px;line-height:1.3;}
+.wdesc{font-size:.95rem;color:var(--mid);font-weight:300;line-height:1.6;margin-bottom:9px;}
+.wtags{display:flex;flex-wrap:wrap;gap:4px;}
+.wtag{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--faint);}
+
+/* Thumbnail support */
+.wthumb{position:relative;overflow:hidden;}
+.wthumb img.thumb-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.wthumb .wti{position:relative;z-index:2;}
+.wthumb.has-thumb .wti{
+  background:rgba(0,0,0,0.28);
+  width:100%;height:100%;
+  position:absolute;inset:0;
+  opacity:0;transition:opacity .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.wc:hover .wthumb.has-thumb .wti{opacity:1;}
+/* Portrait/short card */
+.wc.portrait-card{grid-column:span 1;}
+.wc.portrait-card .wthumb{aspect-ratio:9/16;max-width:240px;margin:0 auto;}
+
+.igrid{display:grid;grid-template-columns:1fr;gap:0;background:var(--line);max-width:900px;margin:0 auto;width:100%;}.igrid .ic{border-radius:0;border:none;border-bottom:1px solid var(--line);background:var(--white);padding:0;}
+.igrid .ic:last-child{border-bottom:none;}
+.igrid .ic-body{padding:1.85rem;}
+.igrid .ic-plain{padding:2rem 2.5rem;background:var(--bg);}
+.ic{background:var(--bg);transition:background .2s;}
+.ic:hover{background:var(--white);}
+.iico{width:44px;height:44px;border-radius:10px;background:var(--acc-bg);border:1px solid var(--acc-xl);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:1rem;}
+.itit{font-size:1.2rem;font-weight:700;letter-spacing:-.01em;font-family:'Space Grotesk',sans-serif;margin-bottom:6px;}
+.idesc{font-size:.95rem;color:var(--mid);font-weight:300;line-height:1.6;margin-bottom:1rem;}
+.ilink{display:inline-flex;align-items:center;gap:5px;font-size:.9rem;font-weight:600;color:var(--acc);text-decoration:none;font-family:'Space Mono',monospace;transition:gap .15s;}
+.ilink:hover{gap:10px;}
+
+.abt{display:grid;grid-template-columns:1.2fr 1fr;border-top:1px solid var(--line);}
+.al{padding:3rem 2.5rem;border-right:1px solid var(--line);}
+.ar{padding:3rem 2.5rem;}
+.atag{font-family:'Space Mono',monospace;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:1.25rem;display:block;}
+.ahed{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:-.03em;font-family:'Space Grotesk',sans-serif;line-height:1.1;margin-bottom:1.1rem;}
+.ahed em{font-style:italic;color:var(--acc);font-weight:300;}
+.abody{font-size:1rem;color:var(--mid);font-weight:300;line-height:1.85;max-width:480px;}
+.plist{list-style:none;}
+.pi{display:flex;gap:.85rem;padding:.8rem 0;border-bottom:1px solid var(--line);align-items:flex-start;}
+.pi:last-child{border-bottom:none;}
+.pn{width:26px;height:26px;background:var(--acc-bg);border:1px solid var(--acc-xl);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:.58rem;color:var(--acc);font-weight:500;flex-shrink:0;margin-top:1px;}
+.pt strong{display:block;font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:1px;}
+.pt span{font-size:.88rem;color:var(--faint);font-weight:300;}
+
+footer{background:var(--ink);color:rgba(255,255,255,.35);padding:2.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;}
+.flogo{font-size:1.25rem;font-weight:700;letter-spacing:.01em;color:#fff;font-family:'Space Mono',monospace;}
+.flogo span{color:var(--acc-l);}
+.flinks{display:flex;gap:1.75rem;}
+.flinks a{color:rgba(255,255,255,.38);text-decoration:none;font-size:1rem;font-weight:500;transition:color .2s;}
+.flinks a:hover{color:var(--acc-l);}
+.fnote{font-family:'Space Mono',monospace;font-size:.85rem;letter-spacing:.05em;}
+
+.mov{display:none;position:fixed;inset:0;background:rgba(16,6,10,.9);z-index:500;align-items:center;justify-content:center;padding:2rem;}
+.mov.open{display:flex;}
+.mbox{background:var(--bg);width:100%;max-width:880px;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;border-bottom:1px solid var(--line);}
+.mht{font-size:.92rem;font-weight:700;letter-spacing:-.02em;}
+.mx{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:1px solid var(--line);font-size:.85rem;cursor:pointer;color:var(--mid);display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.mx:hover{background:var(--acc);color:#fff;border-color:var(--acc);}
+.mvid{width:100%;aspect-ratio:16/9;background:var(--bg3);display:flex;align-items:center;justify-content:center;}
+.mvid iframe{width:100%;height:100%;border:none;display:block;}
+.mvmsg{text-align:center;font-family:'Space Mono',monospace;font-size:.7rem;color:var(--faint);line-height:2;padding:3rem;}
+.mfoot{padding:.9rem 1.4rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--mid);font-weight:300;}
+.mvid.landscape { aspect-ratio: 16/9; }
+.mvid.portrait  { aspect-ratio: 9/16; max-width: 420px; margin: 0 auto; }
+
+/* BUBBLE HOVER WIGGLE */
+@keyframes wiggle{
+  0%{transform:translate(var(--bx),var(--by)) rotate(0deg);}
+  20%{transform:translate(var(--bx),var(--by)) rotate(-12deg) scale(1.15);}
+  40%{transform:translate(var(--bx),var(--by)) rotate(10deg) scale(1.18);}
+  60%{transform:translate(var(--bx),var(--by)) rotate(-8deg) scale(1.15);}
+  80%{transform:translate(var(--bx),var(--by)) rotate(5deg) scale(1.12);}
+  100%{transform:translate(var(--bx),var(--by)) rotate(0deg) scale(1);}
+}
+.icon-bubble.wiggling{animation:wiggle 0.5s ease forwards !important;}
+.icon-bubble{cursor:pointer;}
+
+/* TOOL MODAL */
+.tm-overlay{display:none;position:fixed;inset:0;background:rgba(16,6,10,.85);z-index:600;align-items:center;justify-content:center;padding:2rem;}
+.tm-overlay.open{display:flex;}
+.tm-box{
+  background:var(--bg);
+  width:100%;max-width:520px;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.28);
+  animation:tmIn .25s ease;
+}
+@keyframes tmIn{from{opacity:0;transform:scale(.94) translateY(12px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.tm-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 1.75rem 1rem;
+}
+.tm-icon-wrap{
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.tm-close{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--bg2);border:1px solid var(--line);
+  font-size:.9rem;cursor:pointer;color:var(--mid);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.tm-close:hover{background:var(--acc);color:#fff;border-color:var(--acc);}
+.tm-body{padding:0 1.75rem 1.75rem;}
+.tm-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2rem;font-weight:700;
+  letter-spacing:-.03em;line-height:1;
+  margin-bottom:1rem;
+}
+.tm-how{
+  font-size:.95rem;color:var(--mid);
+  font-weight:300;line-height:1.8;
+  margin-bottom:1.25rem;
+}
+.tm-usecases-label{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);
+  margin-bottom:.75rem;display:block;
+}
+#tm-usecases{
+  list-style:none;
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+#tm-usecases li{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:100px;
+  padding:5px 14px;
+  font-size:.8rem;
+  color:var(--ink2);
+  font-weight:500;
+}
+
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;}.hr{display:none;}
+  .wgrid,.igrid{grid-template-columns:1fr;}.wc.wide{grid-column:span 1;}
+  .abt{grid-template-columns:1fr;}.al{border-right:none;border-bottom:1px solid var(--line);}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  footer{flex-direction:column;gap:1.25rem;text-align:center;}.flinks{justify-content:center;}
+  .nc{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">AI Creative Producer<span class="dot">✦</span></span>
+    <span class="ticker-item">Claude<span class="dot">✦</span></span>
+    <span class="ticker-item">ElevenLabs<span class="dot">✦</span></span>
+    <span class="ticker-item">Kling<span class="dot">✦</span></span>
+    <span class="ticker-item">ChatGPT<span class="dot">✦</span></span>
+    <span class="ticker-item">Gemini<span class="dot">✦</span></span>
+    <span class="ticker-item">Adobe Illustrator<span class="dot">✦</span></span>
+    <span class="ticker-item">Photoshop<span class="dot">✦</span></span>
+    <span class="ticker-item">Nano Banana<span class="dot">✦</span></span>
+    <span class="ticker-item">Seedance<span class="dot">✦</span></span>
+    <span class="ticker-item">AI workflow<span class="dot">✦</span></span>
+     <span class="ticker-item">AI Creative Producer<span class="dot">✦</span></span>
+    <span class="ticker-item">Claude<span class="dot">✦</span></span>
+    <span class="ticker-item">ElevenLabs<span class="dot">✦</span></span>
+    <span class="ticker-item">Kling<span class="dot">✦</span></span>
+    <span class="ticker-item">ChatGPT<span class="dot">✦</span></span>
+    <span class="ticker-item">Gemini<span class="dot">✦</span></span>
+    <span class="ticker-item">Adobe Illustrator<span class="dot">✦</span></span>
+    <span class="ticker-item">Photoshop<span class="dot">✦</span></span>
+    <span class="ticker-item">Nano Banana<span class="dot">✦</span></span>
+    <span class="ticker-item">Seedance<span class="dot">✦</span></span>
+    <span class="ticker-item">AI workflow<span class="dot">✦</span></span>
+  </div>
+</div>
+
+<nav>
+  <div class="nl"><div class="ndot"></div>AI.CREATIVE</div>
+  <div class="nc">
+    <a href="#works">Çalışmalar</a>
+    <a href="#interactive">İnteraktif</a>
+    <a href="#about">Hakkımda</a>
+    <a href="#contact">İletişim</a>
+  </div>
+  <div class="nbadge">Yeni Projelere Açık</div>
+</nav>
+
+<section class="hero">
+  <div class="hl">
+    <div>
+      <div class="eyebrow">AI Creative Producer &nbsp;·&nbsp; <span class="acc">Kazakistan</span></div>
+      <div class="hh">
+        <h1>Merhaba, Ben<br><span class="row2 underline-acc">Zhuldyz. </span><span class="row3">(Yıldız) AI Creative Producer</span></h1>
+        <p class="hsub">Senaryo yazımından ses tasarımına, görsel üretimden final kurguya — AI araçlarıyla tam pipeline. Teknik altyapı ve yaratıcı bakış açısı bir arada.</p>
+      </div>
+    </div>
+    <div class="hbot">
+      <a href="mailto:zhuldyz.bakubay@gmail.com" class="btn-p">İletişime Geç →</a>
+      <a href="#works" class="btn-s">Çalışmalarımı Gör</a>
+    </div>
+  </div>
+
+  <div class="hr">
+    <div class="ppwrap" id="ppwrap">
+
+      <!-- Orbiting rings -->
+      <div class="orbit-ring-gray-2"></div>
+      <div class="orbit-ring-gray-1"></div>
+      <div class="orbit-ring-outer"></div>
+      <div class="orbit-ring-inner"></div>
+      <div class="orbit-ring-dot-wrapper"><div class="pink-dot"></div></div>
+
+      <!-- Floating icon bubbles with IMG placeholders + SVG fallbacks via onerror -->
+      <div class="icon-bubble" id="ib-claude" title="Claude">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Claude-ai-icon.svg/960px-Claude-ai-icon.svg.png?_=20250728014952" alt="Claude" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span style="display:none;flex-direction:column;align-items:center;gap:1px"><svg width="22" height="22" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#D97757"/><path d="M20 10c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 13c-4.4 0-8 1.8-8 4v1h16v-1c0-2.2-3.6-4-8-4z" fill="white"/></svg><span class="ico-lbl">Claude</span></span>
+      </div>
+
+      <div class="icon-bubble" id="ib-chatgpt" title="ChatGPT">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/960px-ChatGPT_logo.svg.png?_=20230903231118" alt="ChatGPT" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span style="display:none;flex-direction:column;align-items:center;gap:1px"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 00-.52-4.91 6.05 6.05 0 00-6.51-2.9A6.07 6.07 0 004.98 4.18a5.98 5.98 0 00-4 2.9 6.05 6.05 0 00.74 7.1 5.98 5.98 0 00.51 4.91 6.05 6.05 0 006.51 2.9A5.98 5.98 0 0013.26 24a6.06 6.06 0 005.77-4.21 5.99 5.99 0 004-2.9 6.06 6.06 0 00-.75-7.07z" fill="#10A37F"/></svg><span class="ico-lbl">ChatGPT</span></span>
+      </div>
+
+      <div class="icon-bubble" id="ib-gemini" title="Gemini">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Google-gemini-icon.svg/3840px-Google-gemini-icon.svg.png" alt="Gemini" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span style="display:none;flex-direction:column;align-items:center;gap:1px"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" fill="#4285F4"/></svg><span class="ico-lbl">Gemini</span></span>
+      </div>
+
+      <div class="icon-bubble" id="ib-kling" title="Kling">
+        <img src="https://hdrobots.com/wp-content/uploads/2024/06/kling-logo-black.webp" alt="Kling" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span style="display:none;flex-direction:column;align-items:center;gap:1px"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#7C3AED"/></svg><span class="ico-lbl">Kling</span></span>
+      </div>
+
+     <div class="icon-bubble" id="ib-11" style="background:#F8F8F8;border-color:#DDD;">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1DN9iXZQW_moadvhVIxjKxgJeGY3HVUGS1A&s" alt="ElevenLabs" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <span style="display:none;flex-direction:column;align-items:center;gap:1px">
+    <span style="font-size:1rem;font-weight:800;color:#111;font-family:'Space Grotesk',sans-serif;letter-spacing:-.04em;">11</span>
+    <span class="ico-lbl">ElevenLabs</span>
+  </span>
+</div>
+
+     <div class="icon-bubble" id="ib-ai" style="background:#FFF5E6;border-color:#FFD49A;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adobe_Illustrator_CC_icon.svg/960px-Adobe_Illustrator_CC_icon.svg.png" alt="Illustrator" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <span style="display:none;flex-direction:column;align-items:center;gap:1px">
+    <span style="font-size:1rem;font-weight:900;color:#FF9A00;font-family:'Space Grotesk',sans-serif;">Ai</span>
+    <span class="ico-lbl">Illustrator</span>
+  </span>
+</div>
+      <div class="icon-bubble" id="ib-ps" style="background:#EBF6FF;border-color:#9FD8F8;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_CC_icon.svg/960px-Adobe_Photoshop_CC_icon.svg.png" alt="Photoshop" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <span style="display:none;flex-direction:column;align-items:center;gap:1px">
+    <span style="font-size:1rem;font-weight:900;color:#31A8FF;font-family:'Space Grotesk',sans-serif;">Ps</span>
+    <span class="ico-lbl">Photoshop</span>
+  </span>
+</div>
+
+     <!-- Profile photo on top -->
+      <img class="pp" src="photo.jpg" alt="Profil">
+
+      <div class="ptag">
+        <strong>Zhuldyz Bakubay</strong>
+        <span>AI Creative · KZ</span>
+      </div>
+    </div>
+
+    <div class="tshelf">
+      <div class="tslbl">Araç Seti</div>
+      <div class="tschips">
+        <span class="chip" onclick="openToolModal('ib-claude')">Claude</span><span class="chip" onclick="openToolModal('ib-chatgpt')">ChatGPT</span><span class="chip" onclick="openToolModal('ib-gemini')">Gemini</span>
+        <span class="chip" onclick="openToolModal('ib-kling')">Kling</span><span class="chip" onclick="openToolModal('ib-11')">ElevenLabs</span>
+        <span class="chip" onclick="openToolModal('ib-ai')">Illustrator</span><span class="chip" onclick="openToolModal('ib-ps')">Photoshop</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="sbox">
+    <span class="sn a">CONCEPT</span>
+    <span class="sl">to final cut</span>
+  </div>
+  <div class="sbox">
+    <span class="sn">AI-CORE</span>
+    <span class="sl">curated toolset</span>
+  </div>
+  <div class="sbox">
+    <span class="sn">REMOTE</span>
+    <span class="sl">location independent</span>
+  </div>
+  <div class="sbox">
+    <span class="sn">AGILE</span>
+    <span class="sl">rapid turnaround</span>
+  </div>
+</div>
+
+<div class="sh" id="works">
+  <div class="sh-l">Seçili Çalışmalar <span class="sh-pill">Video</span></div>
+  <div class="sh-r">08 proje</div>
+</div>
+<div class="wgrid">
+  <div class="wc" id="card-v1" onclick="openModal('v1')">
+    <div class="wthumb" id="thumb-v1"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div>
+    <div class="wmeta"><p class="wcat">Eğitim · Tarihi</p><p class="wtit">Kazak Hanlığı'nın Kuruluşu (1465)</p><p class="wdesc">Senaryo → storyboard → AI video → seslendirme → müzik → final kurgu.</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">ElevenLabs</span><span class="wtag">Suno</span><span class="wtag">Seedance</span></div></div>
+  </div>
+  <div class="wc" id="card-v2" onclick="openModal('v2')"><div class="wthumb" id="thumb-v2"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">Animasyon</p><p class="wtit"> Yuvamıza Hoş Geldin: Sara’nın Hikayesi
+</p><div class="wtags"><span class="wtag">Nano Banana Pro</span><span class="wtag">Kling</span></div></div></div>
+  <div class="wc" id="card-v3" onclick="openModal('v3')"><div class="wthumb" id="thumb-v3"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">2D Animasyon · Lyric Video </p><p class="wtit">Kişiye Özel Lyric Video - Hikaye</p><div class="wtags"><span class="wtag">Kling</span><span class="wtag">Nano Banana</span></div></div></div>
+  <div class="wc" id="card-v5" onclick="openModal('v5')"><div class="wthumb" id="thumb-v5"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">3D Animasyon · Davetiye  ·  Seslendirme</p><p class="wtit">Yarış Konseptli 3D Davetiye</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">Kling</span><span class="wtag">After Effects</span><span class="wtag">Capcut</span><span class="wtag">ElevenLabs</span></div></div></div>
+  <div class="wc" id="card-v6" onclick="openModal('v6')"><div class="wthumb" id="thumb-v6"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">Kurumsal · Animasyon</p><p class="wtit">Anaokulu 3D Tanıtım Filmi</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">Grok Imagine</span></div></div></div>
+  <div class="wc" id="card-v7" onclick="openModal('v7')"><div class="wthumb" id="thumb-v7"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">İllüstrasyonlu video</p><p class="wtit">Harry Potter Temalı 2D Davetiye</p><div class="wtags"><span class="wtag">Nano Banana Pro</span><span class="wtag">Kling</span></div></div></div>
+  <div class="wc" id="card-v8" onclick="openModal('v8')"><div class="wthumb" id="thumb-v8"><div class="wti"><div class="pbtn"><svg viewBox="0 0 16 16"><path d="M3 2l10 6-10 6z"/></svg></div></div></div><div class="wmeta"><p class="wcat">3D Animasyon · Tanıtım</p><p class="wtit">3D Kitap Tanıtımı: Amanat</p><div class="wtags"><span class="wtag">Nano Banana</span><span class="wtag">Kling</span></div></div></div>
+</div>
+
+<div class="sh" id="interactive">
+  <div class="sh-l">İnteraktif Çalışmalar <span class="sh-pill">HTML</span></div>
+  <div class="sh-r">03 uygulama</div>
+</div>
+<div class="igrid">
+
+  <div class="ic" style="overflow:hidden;">
+    <div style="aspect-ratio:16/9;background:url('bta.png') center/cover no-repeat;position:relative;">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.22);display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:2.5rem;">🎮</span>
+      </div>
+    </div>
+    <div class="ic-body">
+      <p class="itit">Kazak Bata Gelenekleri</p>
+      <p class="idesc">Geleneksel Kazak sofra adabını öğreten interaktif ders — hotspot keşif, bilgi kartları ve quiz.</p>
+      <a href="bata.html" target="_blank" class="ilink">Görüntüle →</a>
+    </div>
+  </div>
+
+  <div class="ic" style="overflow:hidden;">
+  <div style="aspect-ratio:16/9;background:url('vocab.png') center/cover no-repeat;position:relative;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.22);display:flex;align-items:center;justify-content:center;">
+      <span style="font-size:2.5rem;">🎮</span>
+    </div>
+  </div>
+  <div class="ic-body">
+    <p class="itit">Proje Başlığı</p>
+    <p class="idesc">Açıklama ekle — ne yaptığını ve hangi araçları kullandığını kısaca anlat.</p>
+    <a href="vocab.html" target="_blank" class="ilink">Görüntüle →</a>
+  </div>
+</div>
+
+ <div class="ic" style="overflow:hidden;">
+  <div style="aspect-ratio:16/9;background:url('dastr.png') center/cover no-repeat;position:relative;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.22);display:flex;align-items:center;justify-content:center;">
+      <span style="font-size:2.5rem;">🎮</span>
+    </div>
+  </div>
+  <div class="ic-body">
+    <p class="itit">Proje Başlığı</p>
+    <p class="idesc">Açıklama ekle — ne yaptığını ve hangi araçları kullandığını kısaca anlat.</p>
+    <a href="dastr.html" target="_blank" class="ilink">Görüntüle →</a>
+  </div>
+</div>
+
+</div>
+
+<div class="abt" id="about">
+  <div class="al">
+    <span class="atag">Hakkımda</span>
+    <h2 class="ahed">Fikirden kurguya: Yapay zeka ile <em>uçtan uca üretim.</em></h2>
+    <p class="abody">Kazakistan merkezli, teknik altyapıya sahip bir AI içerik üreticisiyim. Senaryo yazımından görsel üretime, ses tasarımından son kurguya kadar tüm süreci yönetebiliyorum.<br><br>Yeni projeler ve uzun vadeli iş birlikleri için çalışmaya hazırım. Dinamik süreçlere kolayca uyum sağlar, taleplere hızlıca dönüş yapabilirim.</p>
+  </div>
+  <div class="ar">
+    <span class="atag">Üretim Süreci</span>
+    <ul class="plist">
+      <li class="pi"><div class="pn">01</div><div class="pt"><strong>Brief & Konsept</strong><span>Fikir, anlatı kancası, duygusal yay</span></div></li>
+      <li class="pi"><div class="pn">02</div><div class="pt"><strong>Senaryo & Storyboard</strong><span>Sahne sahne görsel yönetim planı</span></div></li>
+      <li class="pi"><div class="pn">03</div><div class="pt"><strong>Görsel Üretim</strong><span>Kling, Runway, Firefly, Nano Banana</span></div></li>
+      <li class="pi"><div class="pn">04</div><div class="pt"><strong>Ses Katmanı</strong><span>ElevenLabs seslendirme, Suno müzik</span></div></li>
+      <li class="pi"><div class="pn">05</div><div class="pt"><strong>Final Kurgu</strong><span>Altyazı, renk, ses tasarımı, teslim</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="flogo">AI<span>.</span>CREATIVE</div>
+  <div class="flinks">
+    <a href="mailto:zhuldyz.bakubay@gmail.com">E-posta</a>
+     <a href="https://wa.me/77755396693" target="_blank">WhatsApp</a>
+  <a href="https://t.me/starunderscore" target="_blank">Telegram</a>
+  </div>
+  <div class="fnote">Kazakistan · Yeni Projelere Açık · 2026</div>
+</footer>
+
+<!-- TOOL MODAL -->
+<div class="tm-overlay" id="tool-modal" onclick="if(event.target===this)closeToolModal()">
+  <div class="tm-box">
+    <div class="tm-head">
+      <div id="tm-icon-wrap" class="tm-icon-wrap"></div>
+      <button class="tm-close" onclick="closeToolModal()">✕</button>
+    </div>
+    <div class="tm-body">
+      <div class="tm-name" id="tm-name"></div>
+      <p class="tm-how" id="tm-how"></p>
+      <span class="tm-usecases-label">Kullanım Alanları</span>
+      <ul id="tm-usecases"></ul>
+    </div>
+  </div>
+</div>
+
+<div class="mov" id="modal" onclick="bgc(event)">
+  <div class="mbox">
+    <div class="mhead"><span class="mht" id="mT">Video</span><button class="mx" onclick="closeModal()">✕</button></div>
+    <div class="mvid" id="mV"><div class="mvmsg">YouTube linki henüz eklenmedi.</div></div>
+    <div class="mfoot" id="mD"></div>
+  </div>
+</div>
+
+<script>
+// ── FLOATING BUBBLES WITH MOUSE PHYSICS ─────────────────────
+const wrap = document.getElementById('ppwrap');
+const bubbleIds = ['ib-claude','ib-chatgpt','ib-gemini','ib-kling','ib-11','ib-ai','ib-ps'];
+const BW = 58, BH = 58;
+let wW, wH, cx, cy, photoR;
+let mouseX = -999, mouseY = -999;
+const state = [];
+
+function initBubbles() {
+  wW = wrap.offsetWidth;
+  wH = wrap.offsetHeight;
+  
+  if(wW === 0 || wH === 0) return; 
+  
+  cx = wW / 2;
+  cy = wH / 2;
+  photoR = 160; 
+  
+  state.length = 0;
+  bubbleIds.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    
+    const angle = (i / bubbleIds.length) * Math.PI * 2;
+    const dist = photoR + 35 + Math.random() * 50; 
+    
+    let x = cx + Math.cos(angle) * dist - BW / 2;
+    let y = cy + Math.sin(angle) * dist - BH / 2;
+    
+    x = Math.max(0, Math.min(wW - BW, x));
+    y = Math.max(0, Math.min(wH - BH, y));
+    
+    const vx = (Math.random() - 0.5) * 0.5;
+    const vy = (Math.random() - 0.5) * 0.5;
+    
+    state.push({ el, x, y, vx, vy });
+  });
+}
+
+wrap.addEventListener('mousemove', e => {
+  const r = wrap.getBoundingClientRect();
+  mouseX = e.clientX - r.left;
+  mouseY = e.clientY - r.top;
+});
+wrap.addEventListener('mouseleave', () => { mouseX = -999; mouseY = -999; });
+
+wrap.addEventListener('mousedown', e => {
+  const r = wrap.getBoundingClientRect();
+  const mx = e.clientX - r.left;
+  const my = e.clientY - r.top;
+  state.forEach(s => {
+    const dx = (s.x + BW/2) - mx;
+    const dy = (s.y + BH/2) - my;
+    const d = Math.sqrt(dx*dx + dy*dy) || 1;
+    const force = Math.max(0, 1 - d / 300) * 10;
+    s.vx += (dx / d) * force;
+    s.vy += (dy / d) * force;
+  });
+});
+
+function animate() {
+  if (state.length === 0) {
+    initBubbles();
+  }
+  
+  wW = wrap.offsetWidth;
+  wH = wrap.offsetHeight;
+  cx = wW / 2;
+  cy = wH / 2;
+
+  state.forEach(s => {
+    if (mouseX > 0) {
+      const mdx = (s.x + BW/2) - mouseX;
+      const mdy = (s.y + BH/2) - mouseY;
+      const md = Math.sqrt(mdx*mdx + mdy*mdy) || 1;
+      const hoverR = 120;
+      if (md < hoverR) {
+        const push = (hoverR - md) / hoverR * 0.5;
+        s.vx += (mdx / md) * push;
+        s.vy += (mdy / md) * push;
+      }
+    }
+
+    s.x += s.vx;
+    s.y += s.vy;
+
+    if (s.x < 8)        { s.x = 8;         s.vx = Math.abs(s.vx) * 0.7; }
+    if (s.x > wW-BW-8)  { s.x = wW-BW-8;   s.vx = -Math.abs(s.vx) * 0.7; }
+    if (s.y < 8)        { s.y = 8;         s.vy = Math.abs(s.vy) * 0.7; }
+    if (s.y > wH-BH-80) { s.y = wH-BH-80;  s.vy = -Math.abs(s.vy) * 0.7; }
+
+    const dx = (s.x + BW/2) - cx;
+    const dy = (s.y + BH/2) - cy;
+    const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+    if (d < photoR + 15) {
+      const push = (photoR + 15 - d) * 0.09;
+      s.vx += (dx / d) * push;
+      s.vy += (dy / d) * push;
+    }
+
+    state.forEach(other => {
+      if (other === s) return;
+      const bx = (s.x + BW/2) - (other.x + BW/2);
+      const by = (s.y + BH/2) - (other.y + BH/2);
+      const bd = Math.sqrt(bx*bx + by*by) || 1;
+      if (bd < BW + 12) {
+        const push = (BW + 12 - bd) * 0.04;
+        s.vx += (bx / bd) * push;
+        s.vy += (by / bd) * push;
+      }
+    });
+
+    s.vx *= 0.96;
+    s.vy *= 0.96;
+    s.vx += (Math.random() - 0.5) * 0.035;
+    s.vy += (Math.random() - 0.5) * 0.035;
+
+    const spd = Math.sqrt(s.vx*s.vx + s.vy*s.vy);
+    if (spd > 7) { s.vx *= 7/spd; s.vy *= 7/spd; }
+
+    s.el.style.transform = 'translate(' + s.x + 'px,' + s.y + 'px)';
+  });
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(() => {
+  initBubbles();
+  animate();
+});
+window.addEventListener('resize', initBubbles);
+
+// ── VIDEO MODAL ───────────────────────────────────────────────
+const vd={
+  v1:{url:'https://www.youtube.com/watch?v=UWSpnGRUEDg',title:"Kazak Hanlığı'nın Kuruluşu (1465)",desc:'Nano Banana + Seedance + ElevenLabs + Suno.',type:'landscape'},
+  v2:{url:'https://youtube.com/shorts/PpgPvYjFYr0?feature=share',title:'Yuvamıza Hoş Geldin: Sara’nın Hikayesi',desc:'Konsept illüstrasyon kurgusu, sıcak renk paleti ve duygusal geçişler içeren hikaye anlatımı.',type:'portrait'},
+  v3:{url:'https://www.youtube.com/watch?v=fsvyhNvTLfE',title:'Kişiye Özel Lyric Video - Hikaye',desc:'AEl çizimi (line art) illüstrasyonlar',type:'landscape'},
+  v5:{url:'https://www.youtube.com/shorts/keL9WrlB4ks',title:'Yarış Konseptli 3D Davetiye' ,desc:'Pixar Cars evreninden esinlenen, özel 3D karakter entegrasyonu, hareketli grafikler ve lokal seslendirmeyle kurgulanmış doğum günü davetiyesi.',type:'portrait'},
+  v6:{url:'https://www.youtube.com/watch?v=iP251Joke3k',title:'Anaokulu 3D Tanıtım Filmi',desc:'Astana No. 13 "Tulpar" Anaokulu için tasarlanan, sevimli 3D karakter animasyonu, detaylı çevre modellemesi ve yerel seslendirme barındıran kurumsal tanıtım çalışması.',type:'landscape'},
+  v7:{url:'https://youtube.com/shorts/XkG2BCrMV_g?feature=share',title:'Harry Potter Temalı 2D Davetiye',desc:'Harry Potter evreninden esinlenen, sulu boya tarzı illüstrasyonlar, mektup açılış animasyonu ve sihirli geçiş efektleriyle hazırlanan kişiye özel konsept davetiye.',type:'portrait'},
+  v8:{url:'https://www.youtube.com/watch?v=logE2O8niSo',title:'3D Kitap Tanıtımı: Amanat',desc:'Gerçekçi deri dokusu, altın varak detayları, sayfa çevirme simülasyonu ve şiirsel dış seslendirmeyle kurgulanmış 3D kitap tanıtım videosu.',type:'landscape'},
+};
+
+// Auto-load thumbnails + adjust portrait cards
+Object.entries(vd).forEach(([id, v]) => {
+  const yt = ytId(v.url);
+  const thumbEl = document.getElementById('thumb-' + id);
+  const cardEl  = document.getElementById('card-' + id);
+  if (!thumbEl) return;
+  if (v.type === 'portrait' && cardEl) {
+    cardEl.classList.remove('wide');
+    cardEl.classList.add('portrait-card');
+    thumbEl.style.aspectRatio = '9/16';
+    thumbEl.style.maxWidth = '220px';
+    thumbEl.style.margin = '0 auto';
+  }
+  if (!yt) return;
+  const img = document.createElement('img');
+  img.className = 'thumb-img';
+  img.src = 'https://img.youtube.com/vi/' + yt + '/maxresdefault.jpg';
+  img.onerror = () => { img.src = 'https://img.youtube.com/vi/' + yt + '/hqdefault.jpg'; };
+  thumbEl.prepend(img);
+  thumbEl.classList.add('has-thumb');
+});
+function ytId(u){const m=(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?\/]+)/);return m?m[1]:null;}
+function openModal(id){
+  const v=vd[id];
+  document.getElementById('mT').textContent=v.title;
+  document.getElementById('mD').textContent=v.desc;
+  const el=document.getElementById('mV');
+  const yt=ytId(v.url);
+  const isShort=(v.url||'').includes('/shorts/');
+  el.className='mvid ' + (isShort ? 'portrait' : 'landscape');
+  // Buradaki iframe içerisine referrerpolicy özniteliği eklenmiştir:
+  el.innerHTML=yt?'<iframe src="https://www.youtube.com/embed/'+yt+'?autoplay=1" allow="autoplay;encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'<div class="mvmsg">YouTube linki henüz eklenmedi.</div>';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('mV').innerHTML='';}
+function bgc(e){if(e.target===document.getElementById('modal'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeToolModal();}});
+
+// ── TOOL MODAL DATA ───────────────────────────────────────────
+const toolData = {
+  'ib-claude': {
+    name: 'Claude',
+    color: '#D97757',
+    bg: '#FFF4F0',
+    how: 'Claude is my go-to thinking partner for almost everything — brainstorming creative concepts, writing and refining scripts, structuring storyboards, and drafting client-facing copy. I use it as a co-writer: I bring the idea, Claude helps me shape it into something polished and compelling.',
+    usecases: ['Script & narration writing', 'Creative concept development', 'Client brief analysis', 'Storyboard structuring']
+  },
+  'ib-chatgpt': {
+    name: 'ChatGPT',
+    color: '#10A37F',
+    bg: '#F0FBF7',
+    how: 'I rely on ChatGPT for quick research, generating multiple variations of ideas fast, and prompt engineering for image/video tools. It is especially useful when I need to rapidly explore 10 different angles of a concept and pick the strongest one.',
+    usecases: ['Rapid ideation & variations', 'Research & fact-checking', 'Prompt engineering', 'Translation & localization']
+  },
+  'ib-gemini': {
+    name: 'Gemini',
+    color: '#4285F4',
+    bg: '#EFF6FF',
+    how: 'Gemini Canvas is where I build mini interactive apps and presentations directly from a prompt. I use it to create lightweight client-facing tools, interactive explainers, and data dashboards without writing a single line of code myself.',
+    usecases: ['Mini-app generation in Canvas', 'Interactive presentations', 'Google Workspace integration', 'Multimodal content analysis']
+  },
+  'ib-kling': {
+    name: 'Kling',
+    color: '#7C3AED',
+    bg: '#F5F0FF',
+    how: 'Kling is my primary AI video generation tool. I use it to bring storyboard frames to life — feeding it carefully crafted prompts to generate cinematic, smooth motion video clips that form the backbone of my final productions.',
+    usecases: ['AI video generation', 'Cinematic scene creation', 'Character motion & animation', 'B-roll and atmosphere shots']
+  },
+  'ib-11': {
+    name: 'ElevenLabs',
+    color: '#111',
+    bg: '#F8F8F8',
+    how: 'ElevenLabs handles all voiceover work in my productions. I select voices that match the tone of each project — dramatic for historical content, warm for brand storytelling — and layer them with music and sound design for a polished final audio mix.',
+    usecases: ['AI voiceover narration', 'Voice cloning & customization', 'Multi-language audio', 'Emotional tone matching']
+  },
+  'ib-ai': {
+    name: 'Adobe Illustrator',
+    color: '#FF9A00',
+    bg: '#FFF5E6',
+    how: 'Illustrator is my tool for any vector work — custom graphics, title cards, lower thirds, and visual assets that need to be sharp at any scale. I use it to create branded visual elements that complement AI-generated imagery.',
+    usecases: ['Vector graphics & icons', 'Title cards & lower thirds', 'Brand asset creation', 'Visual identity elements']
+  },
+  'ib-ps': {
+    name: 'Photoshop',
+    color: '#31A8FF',
+    bg: '#EBF6FF',
+    how: 'Photoshop is essential for post-processing AI-generated images — fixing artifacts, refining details, color grading, and compositing. I use it to bridge the gap between raw AI output and a truly polished visual.',
+    usecases: ['AI image post-processing', 'Color grading & retouching', 'Compositing & blending', 'Removing artifacts & imperfections']
+  }
+};
+
+function openToolModal(id) {
+  const d = toolData[id];
+  if (!d) return;
+  const m = document.getElementById('tool-modal');
+  document.getElementById('tm-name').textContent = d.name;
+  document.getElementById('tm-name').style.color = d.color;
+  document.getElementById('tm-how').textContent = d.how;
+  const ul = document.getElementById('tm-usecases');
+  ul.innerHTML = d.usecases.map(u => '<li>' + u + '</li>').join('');
+  document.getElementById('tm-icon-wrap').style.background = d.bg;
+  
+  const src = document.getElementById(id);
+  const iconClone = src.cloneNode(true);
+  iconClone.style.position = 'static';
+  iconClone.style.transform = 'none';
+  iconClone.style.width = '64px';
+  iconClone.style.height = '64px';
+  iconClone.style.boxShadow = 'none';
+  iconClone.style.border = 'none';
+  iconClone.style.background = 'transparent';
+  const wrap = document.getElementById('tm-icon-wrap');
+  wrap.innerHTML = '';
+  wrap.appendChild(iconClone);
+  m.classList.add('open');
+}
+function closeToolModal() {
+  document.getElementById('tool-modal').classList.remove('open');
+}
+
+bubbleIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', () => openToolModal(id));
+});
+</script>
+</body>
+</html>
