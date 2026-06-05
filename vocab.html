@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Vocab Bundles</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2336;
+    --accent: #c9a84c;
+    --accent2: #7eb8a4;
+    --text: #e8e4d9;
+    --muted: #8a8fa8;
+    --border: #2a304a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 20px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .subtitle { color: var(--muted); font-size: 0.85rem; font-weight: 300; }
+
+  /* BUNDLE TABS */
+  .bundle-nav {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .bundle-tab {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    padding: 5px 14px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .bundle-tab:hover { border-color: var(--accent); color: var(--text); }
+  .bundle-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0f1117;
+    font-weight: 700;
+  }
+
+  /* MAIN */
+  main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+
+  .bundle-header {
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .bundle-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+  }
+  .bundle-title span {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .bundle-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+    font-weight: 300;
+    max-width: 600px;
+  }
+  .word-count {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
+
+  /* WORD GRID */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  /* FLIP CARD */
+  .flip-card {
+    perspective: 1000px;
+    height: 140px;
+    cursor: pointer;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .flip-front {
+    background: var(--card);
+  }
+  .flip-back {
+    background: #1a2438;
+    border-color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .word-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .word-pos {
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 4px;
+  }
+  .flip-hint {
+    font-size: 0.7rem;
+    color: var(--muted);
+    opacity: 0.6;
+    align-self: flex-end;
+  }
+
+  .word-def {
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.45;
+    font-weight: 300;
+  }
+  .word-ex {
+    font-size: 0.72rem;
+    color: var(--accent2);
+    font-style: italic;
+    line-height: 1.35;
+  }
+
+  /* CONNOTATION BADGE */
+  .tone-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    align-self: flex-start;
+  }
+  .tone-neg { background: #3a1a1a; color: #e88; }
+  .tone-pos { background: #1a3a1a; color: #8e8; }
+  .tone-neu { background: #2a2a1a; color: #cc8; }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .bundle-section { display: none; }
+  .bundle-section.active { display: block; }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 16px 16px; }
+    main { padding: 20px 14px; }
+    h1 { font-size: 1.4rem; }
+    .bundle-title { font-size: 1.2rem; }
+    .word-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .flip-card { height: 130px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>SAT Vocab Bundles</h1>
+    <span class="subtitle">365 words · 20 clusters · flip to reveal</span>
+  </div>
+  <nav class="bundle-nav" id="bundleNav"></nav>
+</header>
+
+<main>
+  <div id="bundleContainer"></div>
+</main>
+
+<script>
+const bundles = [
+  {
+    id: 1,
+    name: "The Stubborn Ones",
+    emoji: "🪨",
+    desc: "Words for people or things that refuse to budge. Subtle differences: obstinate = childishly stubborn; obdurate = coldly unmoved; intransigent = politically rigid; recalcitrant = actively resistant.",
+    words: [
+      { w: "obstinate", pos: "adj", def: "Stubbornly refusing to change one's mind, often unreasonably.", ex: "The child was obstinate about not eating vegetables.", tone: "neg" },
+      { w: "obdurate", pos: "adj", def: "Stubbornly refusing to change, especially in the face of moral appeals.", ex: "Despite the evidence, he remained obdurate in his stance.", tone: "neg" },
+      { w: "intransigent", pos: "adj", def: "Unwilling to change one's views or reach a compromise.", ex: "The two sides remained intransigent during negotiations.", tone: "neg" },
+      { w: "recalcitrant", pos: "adj", def: "Resistant to authority or control; uncooperative.", ex: "The recalcitrant student refused to follow instructions.", tone: "neg" },
+      { w: "tenacious", pos: "adj", def: "Holding firmly to something; not giving up easily.", ex: "She had a tenacious grip on her beliefs.", tone: "pos" },
+      { w: "immutable", pos: "adj", def: "Unchanging over time or unable to be changed.", ex: "The laws of physics are considered immutable.", tone: "neu" },
+    ]
+  },
+  {
+    id: 2,
+    name: "Fuzzy & Unclear",
+    emoji: "🌫️",
+    desc: "Words for things that are vague, hard to understand, or deliberately unclear. Key SAT trap: these words look similar but differ in why something is unclear.",
+    words: [
+      { w: "ambiguous", pos: "adj", def: "Open to more than one interpretation; unclear in meaning.", ex: "Her response was ambiguous and left room for doubt.", tone: "neu" },
+      { w: "ambivalence", pos: "noun", def: "Mixed or contradictory feelings about something.", ex: "His ambivalence about moving was evident.", tone: "neu" },
+      { w: "nebulous", pos: "adj", def: "Vague or ill-defined; hazy.", ex: "His explanation was too nebulous to be understood.", tone: "neg" },
+      { w: "opaque", pos: "adj", def: "Not transparent; difficult to understand.", ex: "The explanation was so opaque that few grasped it.", tone: "neg" },
+      { w: "convoluted", pos: "adj", def: "Extremely complex and difficult to follow.", ex: "The professor's explanation was too convoluted.", tone: "neg" },
+      { w: "oblique", pos: "adj", def: "Indirect; not straightforward.", ex: "His oblique answer made true intentions hard to read.", tone: "neu" },
+      { w: "equivocate", pos: "verb", def: "To use vague or unclear language to avoid commitment.", ex: "The politician equivocated when asked about taxes.", tone: "neg" },
+      { w: "amorphous", pos: "adj", def: "Without a clearly defined shape or structure.", ex: "The painting had an amorphous, dreamlike quality.", tone: "neu" },
+      { w: "indeterminate", pos: "adj", def: "Not exactly known, established, or defined.", ex: "The cause of the explosion remains indeterminate.", tone: "neu" },
+      { w: "indecipherable", pos: "adj", def: "Impossible to read or understand.", ex: "The ancient script was indecipherable without linguists.", tone: "neg" },
+    ]
+  },
+  {
+    id: 3,
+    name: "Praise & Respect",
+    emoji: "🏆",
+    desc: "Words for admiration, recognition, and honor. Note: esteem and reverence are feelings; acclaim and accolade are acts.",
+    words: [
+      { w: "acclaim", pos: "verb", def: "To praise enthusiastically and publicly.", ex: "The critic acclaimed the novel as a masterpiece.", tone: "pos" },
+      { w: "accolade", pos: "noun", def: "An award or recognition for outstanding achievement.", ex: "She received an accolade for her performance.", tone: "pos" },
+      { w: "esteem", pos: "noun", def: "High regard or respect.", ex: "She is held in high esteem by her colleagues.", tone: "pos" },
+      { w: "reverence", pos: "noun", def: "Deep respect, often with a sense of awe.", ex: "She spoke of her mentor with great reverence.", tone: "pos" },
+      { w: "veneration", pos: "noun", def: "Great respect, especially for someone honored or sacred.", ex: "The scholar was held in veneration by students.", tone: "pos" },
+      { w: "magnanimous", pos: "adj", def: "Generous, noble, and forgiving in spirit.", ex: "Despite their rivalry, she was magnanimous in victory.", tone: "pos" },
+      { w: "eminent", pos: "adj", def: "Famous and respected, especially in a field.", ex: "She is an eminent scientist in genetics.", tone: "pos" },
+      { w: "munificent", pos: "adj", def: "More generous than expected; lavishly giving.", ex: "The munificent donor contributed millions to the university.", tone: "pos" },
+    ]
+  },
+  {
+    id: 4,
+    name: "Argue & Claim",
+    emoji: "💬",
+    desc: "SAT loves this cluster for Words in Context — 'assert' vs 'contend' vs 'posit' all mean something slightly different in how certain or aggressive the speaker sounds.",
+    words: [
+      { w: "assert", pos: "verb", def: "To state something forcefully and confidently.", ex: "He asserted his right to speak during the meeting.", tone: "neu" },
+      { w: "contend", pos: "verb", def: "To argue or maintain a position, often against opposition.", ex: "She contended that the new policy was unfair.", tone: "neu" },
+      { w: "posit", pos: "verb", def: "To put forward as a fact or basis for argument.", ex: "The researcher posited a new theory on climate change.", tone: "neu" },
+      { w: "proposes", pos: "verb", def: "To suggest a plan or idea for consideration.", ex: "The senator proposes new healthcare legislation.", tone: "neu" },
+      { w: "reaffirm", pos: "verb", def: "To confirm or assert again, especially after doubt.", ex: "The president reaffirmed his commitment to the policy.", tone: "neu" },
+      { w: "reiterate", pos: "verb", def: "To repeat something for emphasis or clarity.", ex: "The coach reiterated the importance of teamwork.", tone: "neu" },
+      { w: "attest", pos: "verb", def: "To serve as proof or evidence of something.", ex: "The ruins attest to the civilization's skills.", tone: "neu" },
+    ]
+  },
+  {
+    id: 5,
+    name: "Push Back & Disprove",
+    emoji: "⚔️",
+    desc: "Words for contradiction, resistance, and refusal. Key: repudiate is stronger than contradict — it means outright rejection.",
+    words: [
+      { w: "contradict", pos: "verb", def: "To go against or deny the truth of something.", ex: "His statement contradicted the facts.", tone: "neg" },
+      { w: "repudiate", pos: "verb", def: "To reject or disown something firmly.", ex: "She repudiated the false accusations against her.", tone: "neg" },
+      { w: "refutation", pos: "noun", def: "The act of proving a statement or argument false.", ex: "His refutation was backed by strong evidence.", tone: "neu" },
+      { w: "rebuttal", pos: "noun", def: "A response that counters an opposing argument.", ex: "His rebuttal effectively countered their viewpoint.", tone: "neu" },
+      { w: "bellicose", pos: "adj", def: "Aggressively ready to argue or fight.", ex: "His bellicose remarks escalated the argument.", tone: "neg" },
+      { w: "discordant", pos: "adj", def: "Lacking harmony; conflicting.", ex: "Their discordant opinions led to heated arguments.", tone: "neg" },
+      { w: "contention", pos: "noun", def: "A point of disagreement; a disputed assertion.", ex: "The main point of contention was the budget.", tone: "neu" },
+    ]
+  },
+  {
+    id: 6,
+    name: "Everywhere & Growing",
+    emoji: "🌐",
+    desc: "Words about spread and prevalence. Ubiquitous = already everywhere; proliferation = rapid spreading in process; pervasive = thoroughly penetrating.",
+    words: [
+      { w: "ubiquitous", pos: "adj", def: "Present or found everywhere.", ex: "Smartphones have become ubiquitous in modern life.", tone: "neu" },
+      { w: "pervasive", pos: "adj", def: "Spreading widely throughout an area or group.", ex: "The smell of fresh bread was pervasive in the bakery.", tone: "neu" },
+      { w: "prevalent", pos: "adj", def: "Widespread or commonly occurring.", ex: "Influenza is particularly prevalent in winter.", tone: "neu" },
+      { w: "proliferation", pos: "noun", def: "Rapid increase or spread of something.", ex: "The proliferation of smartphones changed communication.", tone: "neu" },
+      { w: "disseminate", pos: "verb", def: "To spread information or ideas widely.", ex: "The internet helps disseminate information quickly.", tone: "neu" },
+      { w: "augment", pos: "verb", def: "To make something greater or more complete.", ex: "The company plans to augment its workforce.", tone: "pos" },
+      { w: "cumulative", pos: "adj", def: "Increasing or building up over time.", ex: "The cumulative effects of stress can impact health.", tone: "neu" },
+    ]
+  },
+  {
+    id: 7,
+    name: "Here Today, Gone Tomorrow",
+    emoji: "🌸",
+    desc: "Temporary, fleeting, or inactive things. Ephemeral = brief by nature; transitory = passing through; dormant = temporarily inactive; latent = hidden but capable of emerging.",
+    words: [
+      { w: "ephemeral", pos: "adj", def: "Lasting for a very short time.", ex: "The beauty of a sunset is ephemeral.", tone: "neu" },
+      { w: "transitory", pos: "adj", def: "Temporary; not permanent.", ex: "The storm had only a transitory effect.", tone: "neu" },
+      { w: "tentative", pos: "adj", def: "Not fully worked out or certain; provisional.", ex: "They made a tentative agreement.", tone: "neu" },
+      { w: "provisional", pos: "adj", def: "Temporary; arranged for the present situation.", ex: "His license was provisional until the final test.", tone: "neu" },
+      { w: "dormant", pos: "adj", def: "Temporarily inactive, but capable of becoming active.", ex: "The volcano has been dormant for centuries.", tone: "neu" },
+      { w: "latent", pos: "adj", def: "Existing but not yet developed or visible.", ex: "His latent talent for painting emerged later in life.", tone: "neu" },
+    ]
+  },
+  {
+    id: 8,
+    name: "Smart & Wise",
+    emoji: "🦉",
+    desc: "Words for intelligence and insight. Erudite = widely learned; sagacious = wise in judgment; perspicacious = sharp in perception; prescient = knowing before it happens.",
+    words: [
+      { w: "sagacious", pos: "adj", def: "Having keen wisdom and good judgment.", ex: "The sagacious leader made thoughtful decisions.", tone: "pos" },
+      { w: "perspicacious", pos: "adj", def: "Having a ready insight; mentally sharp.", ex: "The detective noticed clues that others missed.", tone: "pos" },
+      { w: "erudite", pos: "adj", def: "Having great knowledge, especially from reading.", ex: "The professor's lecture was erudite and insightful.", tone: "pos" },
+      { w: "lucid", pos: "adj", def: "Clear and easy to understand; mentally alert.", ex: "Her explanation was so lucid even a beginner could grasp it.", tone: "pos" },
+      { w: "cogent", pos: "adj", def: "Convincingly clear and logical.", ex: "Her cogent argument persuaded the jury.", tone: "pos" },
+      { w: "prescient", pos: "adj", def: "Seeming to know what will happen before it does.", ex: "Her prescient advice helped us avoid financial trouble.", tone: "pos" },
+      { w: "insightful", pos: "adj", def: "Having deep understanding or perceptive judgment.", ex: "Her comments added depth to the discussion.", tone: "pos" },
+    ]
+  },
+  {
+    id: 9,
+    name: "Careful & Precise",
+    emoji: "🔬",
+    desc: "Words for thoroughness and attention to detail. Meticulous = extreme care; assiduous = persistent effort; fastidious = very hard to satisfy; stringent = strict standards.",
+    words: [
+      { w: "meticulous", pos: "adj", def: "Extremely careful and precise in every detail.", ex: "She was meticulous in organizing her research notes.", tone: "pos" },
+      { w: "assiduous", pos: "adj", def: "Showing great care and constant perseverance.", ex: "Her assiduous work ethic earned her a promotion.", tone: "pos" },
+      { w: "fastidious", pos: "adj", def: "Very attentive to detail; hard to please.", ex: "She was fastidious about organizing her books.", tone: "neu" },
+      { w: "stringent", pos: "adj", def: "Strict or precise in requirements.", ex: "The safety regulations were very stringent.", tone: "neu" },
+      { w: "systematic", pos: "adj", def: "Done in a methodical, organized way.", ex: "His approach to problem-solving was systematic.", tone: "pos" },
+      { w: "sequential", pos: "adj", def: "Arranged in a logical or ordered sequence.", ex: "The instructions must be followed sequentially.", tone: "neu" },
+    ]
+  },
+  {
+    id: 10,
+    name: "Harmful & Damaging",
+    emoji: "⚠️",
+    desc: "Words for harm and damage. Deleterious = subtly harmful over time; detrimental = causing damage; debilitate = physically weakening; exacerbate = making an existing problem worse.",
+    words: [
+      { w: "deleterious", pos: "adj", def: "Causing harm or damage, often gradually.", ex: "Smoking has deleterious effects on health.", tone: "neg" },
+      { w: "detrimental", pos: "adj", def: "Causing harm or damage.", ex: "Excessive screen time can be detrimental to eye health.", tone: "neg" },
+      { w: "debilitate", pos: "verb", def: "To weaken physically or mentally.", ex: "The illness debilitated him, making it hard to work.", tone: "neg" },
+      { w: "exacerbate", pos: "verb", def: "To make a problem or bad situation worse.", ex: "His remarks exacerbated the tension in the room.", tone: "neg" },
+      { w: "undermine", pos: "verb", def: "To weaken or damage something gradually.", ex: "His behavior undermines his credibility.", tone: "neg" },
+      { w: "onerous", pos: "adj", def: "Burdensome or involving great effort or obligation.", ex: "The new regulations placed onerous demands on businesses.", tone: "neg" },
+    ]
+  },
+  {
+    id: 11,
+    name: "Support & Strengthen",
+    emoji: "🏗️",
+    desc: "Words for building up, proving, and enabling. Bolster = provide additional strength; corroborate = confirm with evidence; underpin = be the basis of; conducive = creating helpful conditions.",
+    words: [
+      { w: "bolster", pos: "verb", def: "To support or strengthen something.", ex: "The government provided funds to bolster the economy.", tone: "pos" },
+      { w: "reinforce", pos: "verb", def: "To strengthen or add support to something.", ex: "The bridge was reinforced to withstand strong winds.", tone: "pos" },
+      { w: "underpin", pos: "verb", def: "To support or form the basis of.", ex: "The theory is underpinned by scientific evidence.", tone: "neu" },
+      { w: "corroborate", pos: "verb", def: "To confirm or give support to with evidence.", ex: "The witness corroborated the suspect's alibi.", tone: "neu" },
+      { w: "substantiate", pos: "verb", def: "To provide evidence to prove or support something.", ex: "He failed to substantiate his claim with facts.", tone: "neu" },
+      { w: "conducive", pos: "adj", def: "Making a certain outcome more likely or possible.", ex: "A quiet environment is conducive to studying.", tone: "pos" },
+      { w: "facilitate", pos: "verb", def: "To make an action or process easier.", ex: "New software facilitates remote communication.", tone: "pos" },
+    ]
+  },
+  {
+    id: 12,
+    name: "Reduce & Prevent",
+    emoji: "🛑",
+    desc: "Words for making things smaller, slower, or impossible. Mitigate = lessen severity; preclude = prevent entirely; constrain = limit; relegate = assign to a lower position.",
+    words: [
+      { w: "mitigate", pos: "verb", def: "To make something less severe or serious.", ex: "The government took steps to mitigate the crisis.", tone: "pos" },
+      { w: "diminish", pos: "verb", def: "To make or become smaller or less significant.", ex: "His influence in the company began to diminish.", tone: "neg" },
+      { w: "constrain", pos: "verb", def: "To severely restrict the scope or freedom of.", ex: "Time constraints forced them to work faster.", tone: "neg" },
+      { w: "preclude", pos: "verb", def: "To prevent something from happening.", ex: "His injury precluded him from playing in the final.", tone: "neg" },
+      { w: "relegate", pos: "verb", def: "To assign to a lower or less important position.", ex: "The player was relegated to the bench.", tone: "neg" },
+      { w: "rectify", pos: "verb", def: "To correct something or put something right.", ex: "The company took steps to rectify its mistake.", tone: "pos" },
+    ]
+  },
+  {
+    id: 13,
+    name: "Secret & Subtle",
+    emoji: "🕵️",
+    desc: "Words for things done quietly, indirectly, or without awareness. Tacit = understood without being said; surreptitious = done secretly; ostensible = appears true but may not be.",
+    words: [
+      { w: "tacit", pos: "adj", def: "Understood or implied without being stated.", ex: "There was a tacit agreement between them.", tone: "neu" },
+      { w: "surreptitious", pos: "adj", def: "Kept secret, especially because it would be disapproved of.", ex: "She cast a surreptitious glance at the clock.", tone: "neu" },
+      { w: "ostensible", pos: "adj", def: "Appearing or claimed to be true, but not necessarily so.", ex: "His ostensible purpose was to help, but he had other motives.", tone: "neu" },
+      { w: "inadvertent", pos: "adj", def: "Not resulting from deliberate intent; accidental.", ex: "His inadvertent mistake cost the company thousands.", tone: "neg" },
+      { w: "latent", pos: "adj", def: "Present but not yet active, visible, or obvious.", ex: "His latent talent for painting emerged later.", tone: "neu" },
+      { w: "alludes", pos: "verb", def: "To refer to something indirectly, without naming it.", ex: "The book alludes to historical events.", tone: "neu" },
+      { w: "oblique", pos: "adj", def: "Not expressed directly; indirect.", ex: "His oblique comment left everyone guessing.", tone: "neu" },
+    ]
+  },
+  {
+    id: 14,
+    name: "Showy & Extra",
+    emoji: "💎",
+    desc: "Words for excess, showing off, or being over the top. Ostentatious = deliberately showy; opulent = richly luxurious; obsequious = disgustingly flattering; hubris = dangerous overconfidence.",
+    words: [
+      { w: "ostentatious", pos: "adj", def: "Designed to impress; showy in a way that is seen as excessive.", ex: "The millionaire's gold-plated furniture was ostentatious.", tone: "neg" },
+      { w: "opulent", pos: "adj", def: "Richly luxurious and elaborate.", ex: "The palace was decorated in an opulent style.", tone: "neg" },
+      { w: "conspicuous", pos: "adj", def: "Clearly visible; attracting attention.", ex: "Her bright red dress was conspicuous in the crowd.", tone: "neu" },
+      { w: "obsequious", pos: "adj", def: "Excessively eager to please or agree; servile.", ex: "The obsequious assistant praised her boss at every turn.", tone: "neg" },
+      { w: "hubris", pos: "noun", def: "Excessive pride or self-confidence, leading to downfall.", ex: "The general's hubris led to a disastrous defeat.", tone: "neg" },
+      { w: "exorbitant", pos: "adj", def: "Unreasonably high or excessive.", ex: "The hotel charged an exorbitant fee for parking.", tone: "neg" },
+    ]
+  },
+  {
+    id: 15,
+    name: "Wild & Unpredictable",
+    emoji: "🌪️",
+    desc: "Words for instability and change. Mercurial = mood shifts rapidly; capricious = acts on sudden whims; erratic = inconsistent pattern; volatile = explosive unpredictability.",
+    words: [
+      { w: "mercurial", pos: "adj", def: "Subject to sudden or unpredictable changes of mood.", ex: "His mercurial temperament made him difficult to work with.", tone: "neg" },
+      { w: "capricious", pos: "adj", def: "Given to sudden changes in mood or behavior; impulsive.", ex: "His capricious nature made decisions hard to predict.", tone: "neg" },
+      { w: "erratic", pos: "adj", def: "Unpredictable and inconsistent.", ex: "His erratic driving made the passengers nervous.", tone: "neg" },
+      { w: "turbulent", pos: "adj", def: "Characterized by conflict, disorder, or confusion.", ex: "The country went through a turbulent period.", tone: "neg" },
+      { w: "vacillate", pos: "verb", def: "To waver between different opinions or actions.", ex: "He vacillated between two career paths.", tone: "neg" },
+      { w: "fluctuate", pos: "verb", def: "To rise and fall irregularly.", ex: "Stock prices tend to fluctuate throughout the day.", tone: "neu" },
+    ]
+  },
+  {
+    id: 16,
+    name: "New & Original",
+    emoji: "✨",
+    desc: "Words for things that are fresh, first, or groundbreaking. Novel = new in an interesting way; nascent = just beginning; unprecedented = never seen before; precursor = what came before.",
+    words: [
+      { w: "novel", pos: "adj", def: "New or original; not like anything seen before.", ex: "Her novel approach to the problem impressed colleagues.", tone: "pos" },
+      { w: "nascent", pos: "adj", def: "Just beginning to exist or develop.", ex: "The nascent technology showed great promise.", tone: "neu" },
+      { w: "unprecedented", pos: "adj", def: "Never done or known before.", ex: "The crisis was unprecedented in scale.", tone: "neu" },
+      { w: "precursor", pos: "noun", def: "A person or thing that comes before another of the same kind.", ex: "The pager was a precursor to the smartphone.", tone: "neu" },
+      { w: "inventive", pos: "adj", def: "Having the ability to create new ideas; original.", ex: "The scientist was known for inventive problem-solving.", tone: "pos" },
+      { w: "paradigm", pos: "noun", def: "A typical example or model; a framework of thought.", ex: "The paradigm shifted with quantum mechanics.", tone: "neu" },
+      { w: "catalyst", pos: "noun", def: "Something that causes or accelerates change.", ex: "The internet was a catalyst for global communication.", tone: "neu" },
+    ]
+  },
+  {
+    id: 17,
+    name: "Core & Essential",
+    emoji: "🔑",
+    desc: "Words for what is central, necessary, or deeply built-in. Intrinsic = built into its nature; inherent = existing as a permanent quality; integral = necessary for completeness; imperative = urgently necessary.",
+    words: [
+      { w: "integral", pos: "adj", def: "Necessary to make a whole complete; fundamental.", ex: "A good education is integral to success.", tone: "pos" },
+      { w: "inherent", pos: "adj", def: "Existing as a permanent, essential quality.", ex: "The risks of surgery are inherent to the procedure.", tone: "neu" },
+      { w: "intrinsic", pos: "adj", def: "Belonging to the basic nature of something.", ex: "The intrinsic value of gold makes it a desirable asset.", tone: "neu" },
+      { w: "imperative", pos: "adj", def: "Of vital importance; absolutely necessary.", ex: "It is imperative that we address climate change.", tone: "neu" },
+      { w: "salient", pos: "adj", def: "Most noticeable or important; prominent.", ex: "The salient feature of the painting was its color.", tone: "neu" },
+      { w: "consequential", pos: "adj", def: "Significant; having important consequences.", ex: "His actions had consequential effects on the company.", tone: "neu" },
+      { w: "overarching", pos: "adj", def: "Comprehensive; forming an arch over everything else.", ex: "The overarching theme of the novel was redemption.", tone: "neu" },
+    ]
+  },
+  {
+    id: 18,
+    name: "Doubt & Guesswork",
+    emoji: "❓",
+    desc: "Words for weak claims and uncertain evidence. Conjecture = informed guess; spurious = false but appears true; anecdotal = personal story used as if it were data; tenuous = thin and weak.",
+    words: [
+      { w: "dubious", pos: "adj", def: "Doubtful; not to be relied upon.", ex: "His dubious claims were met with skepticism.", tone: "neg" },
+      { w: "conjecture", pos: "noun", def: "Opinion or conclusion formed on incomplete information.", ex: "His theory was based on conjecture, not facts.", tone: "neg" },
+      { w: "spurious", pos: "adj", def: "False or fake, but appearing genuine.", ex: "The claim was spurious and lacked evidence.", tone: "neg" },
+      { w: "unfounded", pos: "adj", def: "Having no factual basis.", ex: "The rumor was completely unfounded.", tone: "neg" },
+      { w: "anecdotal", pos: "adj", def: "Based on personal accounts rather than systematic research.", ex: "The evidence was largely anecdotal.", tone: "neu" },
+      { w: "inconclusive", pos: "adj", def: "Not leading to a firm conclusion or result.", ex: "The test results were inconclusive.", tone: "neg" },
+      { w: "tenuous", pos: "adj", def: "Weak; not solid or substantial.", ex: "His argument was tenuous and lacked support.", tone: "neg" },
+      { w: "supposition", pos: "noun", def: "An uncertain belief or assumption.", ex: "His argument was based on mere supposition.", tone: "neg" },
+    ]
+  },
+  {
+    id: 19,
+    name: "Explain & Illuminate",
+    emoji: "💡",
+    desc: "Words for making things clearer. Elucidate = explain clearly; illuminate = light up understanding; delineate = draw boundaries precisely; contextualize = put into context.",
+    words: [
+      { w: "elucidate", pos: "verb", def: "To explain or make something clear.", ex: "The professor elucidated the concept in simple terms.", tone: "pos" },
+      { w: "illuminate", pos: "verb", def: "To light up; to make clear or explain.", ex: "He illuminated the complex theory with an analogy.", tone: "pos" },
+      { w: "delineate", pos: "verb", def: "To describe or outline precisely.", ex: "The artist delineated the details of the portrait.", tone: "neu" },
+      { w: "contextualize", pos: "verb", def: "To place something in its surrounding circumstances.", ex: "The professor contextualized the historical event.", tone: "neu" },
+      { w: "impart", pos: "verb", def: "To communicate information or knowledge.", ex: "The mentor imparted valuable wisdom to his students.", tone: "pos" },
+      { w: "exemplifies", pos: "verb", def: "To be a typical example of something.", ex: "His dedication exemplifies true leadership.", tone: "pos" },
+      { w: "depicts", pos: "verb", def: "To represent or show in a picture or words.", ex: "The painting depicts a serene countryside scene.", tone: "neu" },
+    ]
+  },
+  {
+    id: 20,
+    name: "Moods & Personalities",
+    emoji: "🎭",
+    desc: "Words for attitudes and character. Sanguine = cheerfully optimistic; reticent = reserved; taciturn = habitually silent; gregarious = socially outgoing; pragmatic = practical over idealistic.",
+    words: [
+      { w: "sanguine", pos: "adj", def: "Optimistic or hopeful, especially in difficult situations.", ex: "Despite the challenges, he remained sanguine.", tone: "pos" },
+      { w: "pragmatic", pos: "adj", def: "Dealing with things sensibly and realistically.", ex: "She took a pragmatic approach to the problem.", tone: "pos" },
+      { w: "earnest", pos: "adj", def: "Sincere and serious in intention.", ex: "She gave an earnest apology for her mistake.", tone: "pos" },
+      { w: "reticent", pos: "adj", def: "Not revealing one's thoughts; reserved.", ex: "Despite being reticent, he shared his thoughts when asked.", tone: "neu" },
+      { w: "taciturn", pos: "adj", def: "Reserved or uncommunicative in speech.", ex: "The taciturn man rarely spoke in meetings.", tone: "neu" },
+      { w: "gregarious", pos: "adj", def: "Fond of company; sociable.", ex: "He was a gregarious person who made friends easily.", tone: "pos" },
+      { w: "misanthropic", pos: "adj", def: "Disliking and avoiding human society.", ex: "The misanthropic old man rarely spoke to neighbors.", tone: "neg" },
+      { w: "complacent", pos: "adj", def: "Smugly self-satisfied and unaware of potential problems.", ex: "He became complacent after winning several competitions.", tone: "neg" },
+    ]
+  },
+];
+
+// Build navigation
+const nav = document.getElementById('bundleNav');
+const container = document.getElementById('bundleContainer');
+
+bundles.forEach((bundle, idx) => {
+  // Tab
+  const tab = document.createElement('button');
+  tab.className = 'bundle-tab' + (idx === 0 ? ' active' : '');
+  tab.textContent = `${bundle.emoji} ${bundle.name}`;
+  tab.onclick = () => switchBundle(idx);
+  nav.appendChild(tab);
+
+  // Section
+  const section = document.createElement('div');
+  section.className = 'bundle-section' + (idx === 0 ? ' active' : '');
+  section.id = `bundle-${idx}`;
+
+  section.innerHTML = `
+    <div class="bundle-header">
+      <div>
+        <div class="bundle-title">${bundle.emoji} <span>${bundle.name}</span></div>
+        <div class="bundle-desc">${bundle.desc}</div>
+        <div class="progress-bar" style="margin-top:10px; width:200px;">
+          <div class="progress-fill" id="progress-${idx}" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="word-count">${bundle.words.length} words</div>
+    </div>
+    <div class="word-grid" id="grid-${idx}"></div>
+  `;
+
+  container.appendChild(section);
+
+  const grid = section.querySelector(`#grid-${idx}`);
+  bundle.words.forEach((word, wIdx) => {
+    const card = document.createElement('div');
+    card.className = 'flip-card';
+    card.innerHTML = `
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div>
+            <div class="word-name">${word.w}</div>
+            <div class="word-pos">${word.pos}</div>
+            <span class="tone-badge tone-${word.tone}">${word.tone === 'pos' ? '+ positive' : word.tone === 'neg' ? '− negative' : '○ neutral'}</span>
+          </div>
+          <div class="flip-hint">tap to reveal ↗</div>
+        </div>
+        <div class="flip-back">
+          <div class="word-def">${word.def}</div>
+          <div class="word-ex">"${word.ex}"</div>
+        </div>
+      </div>
+    `;
+    card.onclick = () => {
+      card.classList.toggle('flipped');
+      updateProgress(idx);
+    };
+    grid.appendChild(card);
+  });
+});
+
+function switchBundle(idx) {
+  document.querySelectorAll('.bundle-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.bundle-section').forEach((s, i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(bundleIdx) {
+  const grid = document.getElementById(`grid-${bundleIdx}`);
+  const cards = grid.querySelectorAll('.flip-card');
+  const flipped = grid.querySelectorAll('.flip-card.flipped').length;
+  const pct = Math.round((flipped / cards.length) * 100);
+  document.getElementById(`progress-${bundleIdx}`).style.width = pct + '%';
+}
+</script>
+</body>
+</html>
